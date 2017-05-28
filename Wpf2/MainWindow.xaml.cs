@@ -10,12 +10,14 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
-//using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Diagnostics;
+using System.Windows.Controls.Primitives;
 
 namespace Wpf2
 {
@@ -31,8 +33,6 @@ namespace Wpf2
             InitializeComponent();
             SolidColorBrush b = new SolidColorBrush(Color.FromRgb(50, 150, 150));
             Background = b;
-            //ListView.ItemsSource = dir;
-            
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -40,14 +40,14 @@ namespace Wpf2
             counter++;
             TabItem tab = new TabItem();
             tab.Header = "New File " + counter.ToString();
-            tab.Content = new RichTextBox();
+            tab.Content = new System.Windows.Controls.RichTextBox();
             tab.IsSelected = true;
             TabControl.Items.Add(tab);
         }
 
         private void File_Click(object sender, RoutedEventArgs e)
         {
-            var newFileDialog = new OpenFileDialog();
+            var newFileDialog = new Microsoft.Win32.OpenFileDialog();
             newFileDialog.DefaultExt = ".txt";
             newFileDialog.Filter = "TXT documents (.txt) |*.txt";
             Nullable<bool> result = newFileDialog.ShowDialog();
@@ -55,24 +55,26 @@ namespace Wpf2
             {
                 string fname = newFileDialog.FileName;
 
-                RichTextBox rtb = new RichTextBox();
+                System.Windows.Controls.RichTextBox rtb = new System.Windows.Controls.RichTextBox();
                 TextRange range;
                 FileStream fStream;
                 if (File.Exists(fname))
                 {
                     range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
                     fStream = new FileStream(fname, FileMode.OpenOrCreate);
-                    range.Load(fStream, DataFormats.Text);
+                    range.Load(fStream, System.Windows.DataFormats.Text);
                     fStream.Close();
                 }
 
+                fname = fname.Split(@"\"[0]).Last();
+
                 TabItem tab = new TabItem();
-                if(fname.Length>30)
+                if (fname.Length > 30)
                     fname = fname.Substring(0, 31) + "...";
                 tab.Header = fname;
                 tab.Content = rtb;
                 tab.IsSelected = true;
-                
+
                 TabControl.Items.Add(tab);
             }
         }
@@ -88,11 +90,20 @@ namespace Wpf2
                 }
             }
 
-            DirectoryInfo dinfo = new DirectoryInfo(path);
-            FileInfo[] Files = dinfo.GetFiles("*.txt");
-            foreach (FileInfo file in Files)
-                ListView1.Items.Add(file.Name);
+            DirectoryInfo dinfo;
+            FileInfo[] Files;
+            try
+            {
+                dinfo = new DirectoryInfo(path);
+                Files = dinfo.GetFiles("*.txt");
+            }
+            catch (ArgumentException)
+            {
+                Files = new FileInfo[0];
+            }
 
+            foreach (FileInfo file in Files)
+                ListView1.Items.Add(file);
         }
 
         private void Exit_Click(object sender, RoutedEventArgs e)
@@ -102,7 +113,34 @@ namespace Wpf2
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Some information.");
+            System.Windows.MessageBox.Show("Some information.");
+        }
+
+        private void Open_file_folder(object sender, MouseButtonEventArgs e)
+        {
+            var item = (sender as System.Windows.Controls.ListView).SelectedItem;
+            string fname = ((FileInfo)item).FullName;
+
+            System.Windows.Controls.RichTextBox rtb = new System.Windows.Controls.RichTextBox();
+            TextRange range;
+            FileStream fStream;
+            if (File.Exists(fname))
+            {
+                range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+                fStream = new FileStream(fname, FileMode.OpenOrCreate);
+                range.Load(fStream, System.Windows.DataFormats.Text);
+                fStream.Close();
+            }
+
+            fname = ((FileInfo)item).Name;
+            TabItem tab = new TabItem();
+            if (fname.Length > 30)
+                fname = fname.Substring(0, 31) + "...";
+            tab.Header = fname;
+            tab.Content = rtb;
+            tab.IsSelected = true;
+
+            TabControl.Items.Add(tab);
         }
     }
 }
