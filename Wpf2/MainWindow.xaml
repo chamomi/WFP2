@@ -65,7 +65,19 @@
             <MenuItem Header="About" Click="About_Click"/>
         </Menu>
 
-        <TabControl Grid.Row="1" Grid.Column="1" Name="TabControl" TabStripPlacement="Top" Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="350"/>
+        <TabControl Grid.Row="1" Grid.Column="1" Name="TabControl" TabStripPlacement="Top" Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="350">
+            <TabControl.Resources>
+                <DataTemplate x:Key="TabHeader" DataType="TabItem">
+                    <DockPanel>
+                        <Button Name="btnDelete" DockPanel.Dock="Right" Tag="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Header}" Margin="5,0,0,0" Padding="0" PreviewMouseDown="CloseTab" CommandParameter="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Name}">
+                            <TextBlock Text="X"/>
+                        </Button>
+                        <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Header}" />
+                    </DockPanel>
+                </DataTemplate>
+                
+            </TabControl.Resources>
+        </TabControl>
 
         <ListView Grid.Row="2" Grid.Column="1" Name="ListView1" Background="Transparent" VerticalAlignment="Top" MouseDoubleClick="Open_file_folder" ItemsSource="{Binding}" Style="{StaticResource ListViewStyle}" Margin="3,3,3,0">
             <ListView.ItemTemplate>

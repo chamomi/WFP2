@@ -40,25 +40,38 @@ namespace Wpf2
             counter++;
             TabItem tab = new TabItem();
             tab.Header = "New File " + counter.ToString();
+            tab.HeaderTemplate = TabControl.FindResource("TabHeader") as DataTemplate;
             tab.Content = new System.Windows.Controls.RichTextBox();
+            ((RichTextBox)tab.Content).TextChanged += new TextChangedEventHandler(Tabtext_Changed);
+            tab.Tag = "";
             tab.IsSelected = true;
             TabControl.Items.Add(tab);
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            RichTextBox rtb = (RichTextBox)((TabItem)TabControl.SelectedItem).Content;
-            string text = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text;
-            if (!String.IsNullOrWhiteSpace(text))
+            try
             {
-                Trace.WriteLine("not empty");
-                SaveFileDialog savefileDialog = new SaveFileDialog();
-                savefileDialog.DefaultExt = ".txt";
-                savefileDialog.Filter = "TXT documents (.txt) |*.txt";
-                savefileDialog.FileName = (string)((TabItem)TabControl.SelectedItem).Header;
-                Nullable<bool> result = savefileDialog.ShowDialog();
-                if(result == true)
-                    File.WriteAllText(savefileDialog.FileName, text);
+                RichTextBox rtb = (RichTextBox)((TabItem)TabControl.SelectedItem).Content;
+                string text = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text;
+                if (!String.IsNullOrWhiteSpace(text))
+                {
+                    Trace.WriteLine("not empty");
+                    SaveFileDialog savefileDialog = new SaveFileDialog();
+                    savefileDialog.DefaultExt = ".txt";
+                    savefileDialog.Filter = "TXT documents (.txt) |*.txt";
+                    savefileDialog.FileName = (string)((TabItem)TabControl.SelectedItem).Header;
+                    Nullable<bool> result = savefileDialog.ShowDialog();
+                    if (result == true)
+                    {
+                        File.WriteAllText(savefileDialog.FileName, text);
+                        ((TabItem)TabControl.SelectedItem).Tag = "";
+                    }
+                }
+            }
+            catch (NullReferenceException)
+            {
+                return;
             }
         }
 
@@ -89,7 +102,10 @@ namespace Wpf2
                 if (fname.Length > 30)
                     fname = fname.Substring(0, 31) + "...";
                 tab.Header = fname;
+                tab.HeaderTemplate = TabControl.FindResource("TabHeader") as DataTemplate;
                 tab.Content = rtb;
+                ((RichTextBox)tab.Content).TextChanged += new TextChangedEventHandler(Tabtext_Changed);
+                tab.Tag = "";
                 tab.IsSelected = true;
 
                 TabControl.Items.Add(tab);
@@ -154,10 +170,46 @@ namespace Wpf2
             if (fname.Length > 30)
                 fname = fname.Substring(0, 31) + "...";
             tab.Header = fname;
+            tab.HeaderTemplate = TabControl.FindResource("TabHeader") as DataTemplate;
             tab.Content = rtb;
+            ((RichTextBox)tab.Content).TextChanged += new TextChangedEventHandler(Tabtext_Changed);
+            tab.Tag = "";
             tab.IsSelected = true;
 
             TabControl.Items.Add(tab);
         }
+        
+        private void Tabtext_Changed(object sender, RoutedEventArgs e)
+        {
+            ((TabItem)((FrameworkElement)e.Source).Parent).Tag = "1";
+        }
+
+        private void CloseTab(object sender, RoutedEventArgs e)
+        {
+            TabItem tab = new TabItem();
+            foreach (TabItem t in TabControl.Items)
+            {
+                if (t.Header.Equals(((Button)sender).Tag))
+                {
+                    tab = t;
+                    break;
+                }
+            }
+            if (tab != null)
+            {
+                if ((string)tab.Tag == "1")
+                    if (MessageBox.Show("Do you want to close unsaved document?", "Close document", MessageBoxButton.YesNo) == MessageBoxResult.No) return;
+
+                if (TabControl.SelectedItem == tab)
+                {
+                    if(tab.TabIndex>0) TabControl.SelectedItem = tab.TabIndex - 1;
+                    else if(TabControl.Items.Count>1) TabControl.SelectedItem = tab.TabIndex + 1;
+                }
+
+                if (TabControl != null)
+                    TabControl.Items.Remove(tab);
+            }
+        }
+
     }
 }
