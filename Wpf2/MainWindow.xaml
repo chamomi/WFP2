@@ -29,29 +29,52 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
-        <Menu DockPanel.Dock="Top" Grid.Row="0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <StackPanel Grid.Row="1" Grid.RowSpan="2" Background="Azure">
+            <Border BorderBrush="Black" BorderThickness="1" Margin="10">
+                <StackPanel Margin="5">
+                    <RadioButton IsChecked="True" Margin="5">Show tree</RadioButton>
+                    <RadioButton Margin="5">Show plugins</RadioButton>
+                </StackPanel>
+            </Border>
+
+            <Border BorderBrush="Black" BorderThickness="1" Margin="10">
+                <TreeView Margin="5">
+                    <TreeViewItem>
+                        
+                    </TreeViewItem>
+                </TreeView>
+            </Border>
+        </StackPanel>
+
+        <Menu Grid.Row="0" Grid.ColumnSpan="2">
             <MenuItem Header="File">
                 <MenuItem Header="New" Click="New_Click"/>
+                <MenuItem Header="Save" Click="Save_Click"/>
                 <MenuItem Header="Open file" Click="File_Click"/>
                 <MenuItem Header="Open folder" Click="Folder_Click"/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
+            <MenuItem Header="Plugins">
+                
+            </MenuItem>
             <MenuItem Header="About" Click="About_Click"/>
         </Menu>
 
-        <TabControl Grid.Row="1" Name="TabControl" TabStripPlacement="Top" Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="350">
+        <TabControl Grid.Row="1" Grid.Column="1" Name="TabControl" TabStripPlacement="Top" Background="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="350"/>
 
-        </TabControl>
-        
-        <ListView Grid.Row="2" Name="ListView1" Background="Transparent" VerticalAlignment="Top" MouseDoubleClick="Open_file_folder" ItemsSource="{Binding}" Style="{StaticResource ListViewStyle}" Margin="3,3,3,3">
+        <ListView Grid.Row="2" Grid.Column="1" Name="ListView1" Background="Transparent" VerticalAlignment="Top" MouseDoubleClick="Open_file_folder" ItemsSource="{Binding}" Style="{StaticResource ListViewStyle}" Margin="3,3,3,0">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Background="Transparent">
                         <Border.Effect>
                             <DropShadowEffect/>
                         </Border.Effect>
-                        <StackPanel Orientation="Vertical" Height="Auto" Background="White">
+                        <StackPanel Orientation="Vertical" Height="Auto" Background="White" VerticalAlignment="Top">
                             <Image Source="C:\Users\HP pc\Source\Repos\WFP2\Wpf2\Resources\icon.png" Margin="5" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                         </StackPanel>

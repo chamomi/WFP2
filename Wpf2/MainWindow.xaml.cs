@@ -12,7 +12,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Forms;
+//using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -43,6 +43,23 @@ namespace Wpf2
             tab.Content = new System.Windows.Controls.RichTextBox();
             tab.IsSelected = true;
             TabControl.Items.Add(tab);
+        }
+
+        private void Save_Click(object sender, RoutedEventArgs e)
+        {
+            RichTextBox rtb = (RichTextBox)((TabItem)TabControl.SelectedItem).Content;
+            string text = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd).Text;
+            if (!String.IsNullOrWhiteSpace(text))
+            {
+                Trace.WriteLine("not empty");
+                SaveFileDialog savefileDialog = new SaveFileDialog();
+                savefileDialog.DefaultExt = ".txt";
+                savefileDialog.Filter = "TXT documents (.txt) |*.txt";
+                savefileDialog.FileName = (string)((TabItem)TabControl.SelectedItem).Header;
+                Nullable<bool> result = savefileDialog.ShowDialog();
+                if(result == true)
+                    File.WriteAllText(savefileDialog.FileName, text);
+            }
         }
 
         private void File_Click(object sender, RoutedEventArgs e)
