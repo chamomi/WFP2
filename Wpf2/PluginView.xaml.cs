@@ -25,19 +25,5 @@ namespace Wpf2
         {
             InitializeComponent();
         }
-
-        //public async void FadeOut()
-        //{
-        //    DoubleAnimation ani = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(2));
-        //    this.BeginAnimation(PluginView.OpacityProperty, ani);
-        //}
-
-        //public async void FadeIn(TreeView tv)
-        //{
-        //    DoubleAnimation ani = new DoubleAnimation(0, 1, TimeSpan.FromSeconds(2));
-        //    DoubleAnimation ani1 = new DoubleAnimation(1, 0, TimeSpan.FromSeconds(2));
-        //    tv.BeginAnimation(TreeView.OpacityProperty, ani1);
-        //    this.BeginAnimation(PluginView.OpacityProperty, ani);
-        //}
     }
 }

@@ -6,7 +6,21 @@
              xmlns:local="clr-namespace:Wpf2"
              mc:Ignorable="d" 
              d:DesignHeight="500" d:DesignWidth="200">
-    <!--<UserControl.Triggers>
+
+    <UserControl.Resources>
+        <ControlTemplate x:Key="buttonTemp" TargetType="Button">
+            <Border Name="Border" CornerRadius="3" BorderThickness="3" BorderBrush="DarkGreen" Background="LightGreen" Width="150" Height="30">
+                <TextBlock Text="Use plugin" FontWeight="Bold" FontSize="15" Foreground="White" HorizontalAlignment="Center"/>
+            </Border>
+            <ControlTemplate.Triggers>
+                <Trigger Property="IsMouseOver" Value="true">
+                    <Setter TargetName="Border" Property="Background" Value="DarkGreen"/>
+                </Trigger>
+            </ControlTemplate.Triggers>
+        </ControlTemplate>
+    </UserControl.Resources>
+    
+    <UserControl.Triggers>
         <EventTrigger RoutedEvent="Loaded">
             <BeginStoryboard>
                 <Storyboard>
@@ -16,23 +30,14 @@
                 </Storyboard>
             </BeginStoryboard>
         </EventTrigger>
-        <EventTrigger RoutedEvent="PreviewMouseDown">
-            <BeginStoryboard>
-                <Storyboard>
-                    <DoubleAnimation
-              Storyboard.TargetProperty="Opacity"
-              From="1.0" To="0.0" Duration="0:0:1"/>
-                </Storyboard>
-            </BeginStoryboard>
-        </EventTrigger>
-    </UserControl.Triggers>-->
+    </UserControl.Triggers>
     
     <StackPanel>
-        <TextBlock Text="Select Plugin" HorizontalAlignment="Center" Margin="5"/>
+        <TextBlock Text="Select Plugin:" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" Margin="5"/>
         <ComboBox HorizontalAlignment="Center" Margin="5">
             <ComboBoxItem Content="Split letters" IsSelected="True"/>
             <ComboBoxItem Content="Upper case letters"/>
         </ComboBox>
-        <Button Content="Use Plugin" Margin="5"/>
+        <Button Margin="5" Template="{StaticResource buttonTemp}"/>
     </StackPanel>
 </UserControl>

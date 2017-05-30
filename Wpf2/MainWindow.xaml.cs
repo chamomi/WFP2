@@ -220,13 +220,6 @@ namespace Wpf2
         {
             try
             {
-                //plugv.FadeOut();
-                //treev.FadeIn(plugv);
-
-                //MouseButtonEventArgs arg = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left);
-                //arg.RoutedEvent = Button.PreviewMouseDownEvent;
-                //plugv.RaiseEvent(arg);
-
                 this.ContentControl.Content = treev;
             }
             catch (NullReferenceException) { }
@@ -234,8 +227,6 @@ namespace Wpf2
 
         private void Plugin_check(object sender, RoutedEventArgs e)
         {
-            //treev.FadeOut();
-            //plugv.FadeIn(treev);
             this.ContentControl.Content = plugv;
         }
     }

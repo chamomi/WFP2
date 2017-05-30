@@ -84,7 +84,7 @@
                             <DropShadowEffect/>
                         </Border.Effect>
                         <StackPanel Orientation="Vertical" Height="Auto" Background="White" VerticalAlignment="Top">
-                            <Image Source="C:\Users\HP pc\Source\Repos\WFP2\Wpf2\Resources\icon.png" Margin="5" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                            <Image Source="H:\Windows7\Documents\Visual Studio 2015\Projects\Wpf2\Wpf2\Resources\icon.png" Margin="5" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
