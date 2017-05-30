@@ -30,7 +30,7 @@ namespace Wpf2
     {
         int counter = 0;
         TreeViewUC treev;
-        PluginView plugv = new PluginView();
+        PluginView plugv;
         public MainWindow()
         {
             InitializeComponent();
@@ -38,6 +38,7 @@ namespace Wpf2
             Background = b;
             treev = new TreeViewUC(ListView1);
             this.ContentControl.Content = treev;
+            plugv = new PluginView(this);
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -228,6 +229,28 @@ namespace Wpf2
         private void Plugin_check(object sender, RoutedEventArgs e)
         {
             this.ContentControl.Content = plugv;
+        }
+
+        public void Split_Click(object sender, RoutedEventArgs e)
+        {
+            SplitLetters sl = new SplitLetters();
+            RichTextBox rtb = ((RichTextBox)((TabItem)TabControl.SelectedItem).Content);
+            TextRange tr = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+            Trace.WriteLine(tr.Text);
+            FlowDocument myFlowDoc = new FlowDocument();
+            myFlowDoc.Blocks.Add(new Paragraph(new Run(sl.Do(tr.Text))));
+            rtb.Document = myFlowDoc;
+        }
+
+        public void Upper_Click(object sender, RoutedEventArgs e)
+        {
+            Uppercase up = new Uppercase();
+            RichTextBox rtb = ((RichTextBox)((TabItem)TabControl.SelectedItem).Content);
+            TextRange tr = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+            Trace.WriteLine(tr.Text);
+            FlowDocument myFlowDoc = new FlowDocument();
+            myFlowDoc.Blocks.Add(new Paragraph(new Run(up.Do(tr.Text))));
+            rtb.Document = myFlowDoc;
         }
     }
 }

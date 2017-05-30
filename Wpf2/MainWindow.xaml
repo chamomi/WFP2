@@ -58,7 +58,8 @@
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Plugins">
-
+                <MenuItem Header="Split letters" Click="Split_Click" Name="Sp"/>
+                <MenuItem Header="Uppercase letters" Click="Upper_Click" Name="Up"/>
             </MenuItem>
             <MenuItem Header="About" Click="About_Click"/>
         </Menu>

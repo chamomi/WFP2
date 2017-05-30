@@ -57,12 +57,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="IPlugin.cs" />
     <Compile Include="PluginView.xaml.cs">
       <DependentUpon>PluginView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="SplitLetters.cs" />
     <Compile Include="TreeViewUC.xaml.cs">
       <DependentUpon>TreeViewUC.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Uppercase.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

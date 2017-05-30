@@ -33,11 +33,11 @@
     </UserControl.Triggers>
     
     <StackPanel>
-        <TextBlock Text="Select Plugin:" FontWeight="Bold" FontSize="12" HorizontalAlignment="Center" Margin="5"/>
-        <ComboBox HorizontalAlignment="Center" Margin="5">
+        <TextBlock Text="Select Plugin:" FontWeight="Bold" FontSize="20" HorizontalAlignment="Center" Margin="5"/>
+        <ComboBox HorizontalAlignment="Center" Margin="5" Name="CBox">
             <ComboBoxItem Content="Split letters" IsSelected="True"/>
             <ComboBoxItem Content="Upper case letters"/>
         </ComboBox>
-        <Button Margin="5" Template="{StaticResource buttonTemp}"/>
+        <Button Margin="5" Template="{StaticResource buttonTemp}" Click="Plugin_Click"/>
     </StackPanel>
 </UserControl>

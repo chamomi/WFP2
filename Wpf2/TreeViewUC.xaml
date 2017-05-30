@@ -19,7 +19,7 @@
     </UserControl.Triggers>
 
     <Grid ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.VerticalScrollBarVisibility="Auto">
-        <TreeView Name="folders" SelectedItemChanged="folders_SelectedItemChanged" Height="450" Width="150">
+        <TreeView Name="folders" SelectedItemChanged="folders_SelectedItemChanged" Height="450" Width="160">
             <TreeView.Resources>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="HeaderTemplate">
