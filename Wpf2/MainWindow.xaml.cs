@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,6 +19,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Windows.Controls.Primitives;
+using System.Windows.Media.Animation;
 
 namespace Wpf2
 {
@@ -27,12 +29,15 @@ namespace Wpf2
     public partial class MainWindow : Window
     {
         int counter = 0;
-        public ObservableCollection<string> dir = new ObservableCollection<string>();
+        TreeViewUC treev;
+        PluginView plugv = new PluginView();
         public MainWindow()
         {
             InitializeComponent();
             SolidColorBrush b = new SolidColorBrush(Color.FromRgb(50, 150, 150));
             Background = b;
+            treev = new TreeViewUC(ListView1);
+            this.ContentControl.Content = treev;
         }
 
         private void New_Click(object sender, RoutedEventArgs e)
@@ -211,5 +216,27 @@ namespace Wpf2
             }
         }
 
+        private void Tree_check(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                //plugv.FadeOut();
+                //treev.FadeIn(plugv);
+
+                //MouseButtonEventArgs arg = new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left);
+                //arg.RoutedEvent = Button.PreviewMouseDownEvent;
+                //plugv.RaiseEvent(arg);
+
+                this.ContentControl.Content = treev;
+            }
+            catch (NullReferenceException) { }
+        }
+
+        private void Plugin_check(object sender, RoutedEventArgs e)
+        {
+            //treev.FadeOut();
+            //plugv.FadeIn(treev);
+            this.ContentControl.Content = plugv;
+        }
     }
 }

@@ -37,17 +37,15 @@
         <StackPanel Grid.Row="1" Grid.RowSpan="2" Background="Azure">
             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
                 <StackPanel Margin="5">
-                    <RadioButton IsChecked="True" Margin="5">Show tree</RadioButton>
-                    <RadioButton Margin="5">Show plugins</RadioButton>
+                    <RadioButton IsChecked="True" Margin="5" Checked="Tree_check">Show tree</RadioButton>
+                    <RadioButton Margin="5" Checked="Plugin_check">Show plugins</RadioButton>
                 </StackPanel>
             </Border>
 
             <Border BorderBrush="Black" BorderThickness="1" Margin="10">
-                <TreeView Margin="5">
-                    <TreeViewItem>
-                        
-                    </TreeViewItem>
-                </TreeView>
+                <ContentControl Margin="5" Name="ContentControl">
+
+                </ContentControl>
             </Border>
         </StackPanel>
 
@@ -60,7 +58,7 @@
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Plugins">
-                
+
             </MenuItem>
             <MenuItem Header="About" Click="About_Click"/>
         </Menu>
@@ -75,7 +73,6 @@
                         <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type TabItem}}, Path=Header}" />
                     </DockPanel>
                 </DataTemplate>
-                
             </TabControl.Resources>
         </TabControl>
 
