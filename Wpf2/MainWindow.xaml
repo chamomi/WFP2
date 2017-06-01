@@ -55,6 +55,7 @@
                 <MenuItem Header="Save" Click="Save_Click"/>
                 <MenuItem Header="Open file" Click="File_Click"/>
                 <MenuItem Header="Open folder" Click="Folder_Click"/>
+                <Separator/>
                 <MenuItem Header="Exit" Click="Exit_Click"/>
             </MenuItem>
             <MenuItem Header="Plugins">

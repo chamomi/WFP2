@@ -1,19 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace Wpf2
 {
@@ -23,6 +12,7 @@ namespace Wpf2
     public partial class TreeViewUC : UserControl
     {
         ListView lv = new ListView();
+        int count = 0;
         public TreeViewUC(ListView _lv)
         {
             InitializeComponent();
@@ -45,10 +35,14 @@ namespace Wpf2
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            foreach (DriveInfo driv in DriveInfo.GetDrives())
+            if (count == 0)
             {
-                if (driv.IsReady)
-                    Populate(driv.Name , driv.Name, folders, null, false);
+                foreach (DriveInfo driv in DriveInfo.GetDrives())
+                {
+                    if (driv.IsReady)
+                        Populate(driv.Name, driv.Name, folders, null, false);
+                }
+                count++;
             }
         }
 
@@ -59,18 +53,22 @@ namespace Wpf2
             if (_item.Items.Count == 1 && ((TreeViewItem)_item.Items[0]).Header == null)
             {
                 _item.Items.Clear();
-                foreach (string dir in Directory.GetDirectories(_item.Tag.ToString()))
+                try
                 {
-                    DirectoryInfo _dirinfo = new DirectoryInfo(dir);
-                    Populate(_dirinfo.Name, _dirinfo.FullName, null, _item, false);
-                }
+                    foreach (string dir in Directory.GetDirectories(_item.Tag.ToString()))
+                    {
+                        DirectoryInfo _dirinfo = new DirectoryInfo(dir);
+                        Populate(_dirinfo.Name, _dirinfo.FullName, null, _item, false);
+                    }
 
-                foreach (string dir in Directory.GetFiles(_item.Tag.ToString()))
-                {
-                    FileInfo _dirinfo = new FileInfo(dir);
-                    Populate(_dirinfo.Name, _dirinfo.FullName, null, _item, true);
+                    foreach (string dir in Directory.GetFiles(_item.Tag.ToString()))
+                    {
+                        FileInfo _dirinfo = new FileInfo(dir);
+                        Populate(_dirinfo.Name, _dirinfo.FullName, null, _item, true);
+                    }
                 }
-
+                catch(UnauthorizedAccessException)
+                { MessageBox.Show("You have no access to these files.", "Access denied"); return; }
             }
         }
 
@@ -93,11 +91,13 @@ namespace Wpf2
                 path = i.Header + @"\\" + path;
 
             DirectoryInfo dinfo;
-            FileInfo[] Files;
+            FileInfo[] Files = { new FileInfo("./") };
             try
             {
                 dinfo = new DirectoryInfo(path);
-                Files = dinfo.GetFiles("*.txt");
+                try { Files = dinfo.GetFiles("*.txt"); }
+                catch(UnauthorizedAccessException)
+                { MessageBox.Show("You have no access to these files.", "Access denied"); return; }
             }
             catch (ArgumentException)
             {

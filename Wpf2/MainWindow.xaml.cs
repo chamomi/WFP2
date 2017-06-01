@@ -1,25 +1,13 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
-//using System.Windows.Forms;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using System.Diagnostics;
-using System.Windows.Controls.Primitives;
-using System.Windows.Media.Animation;
 
 namespace Wpf2
 {
@@ -47,7 +35,7 @@ namespace Wpf2
             TabItem tab = new TabItem();
             tab.Header = "New File " + counter.ToString();
             tab.HeaderTemplate = TabControl.FindResource("TabHeader") as DataTemplate;
-            tab.Content = new System.Windows.Controls.RichTextBox();
+            tab.Content = new RichTextBox();
             ((RichTextBox)tab.Content).TextChanged += new TextChangedEventHandler(Tabtext_Changed);
             tab.Tag = "";
             tab.IsSelected = true;
@@ -83,7 +71,7 @@ namespace Wpf2
 
         private void File_Click(object sender, RoutedEventArgs e)
         {
-            var newFileDialog = new Microsoft.Win32.OpenFileDialog();
+            var newFileDialog = new OpenFileDialog();
             newFileDialog.DefaultExt = ".txt";
             newFileDialog.Filter = "TXT documents (.txt) |*.txt";
             Nullable<bool> result = newFileDialog.ShowDialog();
@@ -91,14 +79,14 @@ namespace Wpf2
             {
                 string fname = newFileDialog.FileName;
 
-                System.Windows.Controls.RichTextBox rtb = new System.Windows.Controls.RichTextBox();
+                RichTextBox rtb = new RichTextBox();
                 TextRange range;
                 FileStream fStream;
                 if (File.Exists(fname))
                 {
                     range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
                     fStream = new FileStream(fname, FileMode.OpenOrCreate);
-                    range.Load(fStream, System.Windows.DataFormats.Text);
+                    range.Load(fStream, DataFormats.Text);
                     fStream.Close();
                 }
 
@@ -152,22 +140,22 @@ namespace Wpf2
 
         private void About_Click(object sender, RoutedEventArgs e)
         {
-            System.Windows.MessageBox.Show("Some information.");
+            MessageBox.Show("Text editor application\nAllows to: create and save files, open files from folder and display all txt files in selected folder.\nTwo text-editing plugins available\nTo start work go to File->New", "About");
         }
 
         private void Open_file_folder(object sender, MouseButtonEventArgs e)
         {
-            var item = (sender as System.Windows.Controls.ListView).SelectedItem;
+            var item = (sender as ListView).SelectedItem;
             string fname = ((FileInfo)item).FullName;
 
-            System.Windows.Controls.RichTextBox rtb = new System.Windows.Controls.RichTextBox();
+            RichTextBox rtb = new RichTextBox();
             TextRange range;
             FileStream fStream;
             if (File.Exists(fname))
             {
                 range = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
                 fStream = new FileStream(fname, FileMode.OpenOrCreate);
-                range.Load(fStream, System.Windows.DataFormats.Text);
+                range.Load(fStream, DataFormats.Text);
                 fStream.Close();
             }
 
@@ -233,24 +221,30 @@ namespace Wpf2
 
         public void Split_Click(object sender, RoutedEventArgs e)
         {
-            SplitLetters sl = new SplitLetters();
-            RichTextBox rtb = ((RichTextBox)((TabItem)TabControl.SelectedItem).Content);
-            TextRange tr = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            Trace.WriteLine(tr.Text);
-            FlowDocument myFlowDoc = new FlowDocument();
-            myFlowDoc.Blocks.Add(new Paragraph(new Run(sl.Do(tr.Text))));
-            rtb.Document = myFlowDoc;
+            if (TabControl.SelectedItem != null)
+            {
+                SplitLetters sl = new SplitLetters();
+                RichTextBox rtb = ((RichTextBox)((TabItem)TabControl.SelectedItem).Content);
+                TextRange tr = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+                Trace.WriteLine(tr.Text);
+                FlowDocument myFlowDoc = new FlowDocument();
+                myFlowDoc.Blocks.Add(new Paragraph(new Run(sl.Do(tr.Text))));
+                rtb.Document = myFlowDoc;
+            }
         }
 
         public void Upper_Click(object sender, RoutedEventArgs e)
         {
-            Uppercase up = new Uppercase();
-            RichTextBox rtb = ((RichTextBox)((TabItem)TabControl.SelectedItem).Content);
-            TextRange tr = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
-            Trace.WriteLine(tr.Text);
-            FlowDocument myFlowDoc = new FlowDocument();
-            myFlowDoc.Blocks.Add(new Paragraph(new Run(up.Do(tr.Text))));
-            rtb.Document = myFlowDoc;
+            if (TabControl.SelectedItem != null)
+            {
+                Uppercase up = new Uppercase();
+                RichTextBox rtb = ((RichTextBox)((TabItem)TabControl.SelectedItem).Content);
+                TextRange tr = new TextRange(rtb.Document.ContentStart, rtb.Document.ContentEnd);
+                Trace.WriteLine(tr.Text);
+                FlowDocument myFlowDoc = new FlowDocument();
+                myFlowDoc.Blocks.Add(new Paragraph(new Run(up.Do(tr.Text))));
+                rtb.Document = myFlowDoc;
+            }
         }
     }
 }
