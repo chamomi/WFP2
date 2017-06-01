@@ -78,6 +78,9 @@
         </TabControl>
 
         <ListView Grid.Row="2" Grid.Column="1" Name="ListView1" Background="Transparent" VerticalAlignment="Top" MouseDoubleClick="Open_file_folder" ItemsSource="{Binding}" Style="{StaticResource ListViewStyle}" Margin="3,3,3,0">
+            <ListView.Resources>
+                <BitmapImage x:Key="icon" UriSource="Resources/icon.png"/>
+            </ListView.Resources>
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <Border Background="Transparent">
@@ -85,7 +88,7 @@
                             <DropShadowEffect/>
                         </Border.Effect>
                         <StackPanel Orientation="Vertical" Height="Auto" Background="White" VerticalAlignment="Top">
-                            <Image Source="H:\Windows7\Documents\Visual Studio 2015\Projects\Wpf2\Wpf2\Resources\icon.png" Margin="5" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center"/>
+                            <Image Source="{StaticResource icon}" Margin="5" Height="100" VerticalAlignment="Top" HorizontalAlignment="Center"/>
                             <TextBlock Text="{Binding Name}" VerticalAlignment="Bottom" HorizontalAlignment="Center"/>
                         </StackPanel>
                     </Border>
